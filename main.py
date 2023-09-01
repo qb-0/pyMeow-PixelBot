@@ -124,11 +124,7 @@ class Aimbot:
         )
 
 
-def main():
+if __name__ == "__main__":
     aimbot = Aimbot()
     aimbot.read_config()
     aimbot.run()
-
-
-if __name__ == "__main__":
-    main()
