@@ -2,7 +2,7 @@ import pyMeow as pm
 from configparser import ConfigParser
 
 
-class QCAimbot:
+class Aimbot:
     def __init__(self):
         self.config = dict()
         self.region = dict()
@@ -125,7 +125,7 @@ class QCAimbot:
 
 
 def main():
-    aimbot = QCAimbot()
+    aimbot = Aimbot()
     aimbot.read_config()
     aimbot.run()
 
