@@ -7,9 +7,11 @@ class Aimbot:
         self.config = dict()
         self.region = dict()
         self.enemy_in_fov = bool()
+        self.paused = bool()
         self.colors = {
             "blue": pm.get_color("skyblue"),
             "red": pm.get_color("red"),
+            "orange": pm.get_color("orange"),
         }
 
     def read_config(self):
@@ -22,6 +24,7 @@ class Aimbot:
                 "color": pm.get_color(c.get("Main", "color")),
                 "similarity": c.getint("Main", "similarity"),
                 "fov": c.getint("Main", "fov"),
+                "pause_btn": c.getint("Main", "pause_btn"),
                 "autoaim": c.getboolean("Aimbot", "autoaim"),
                 "aimkey": c.getint("Aimbot", "aimkey"),
                 "mark_color": pm.get_color(c.get("Aimbot", "mark_color")),
@@ -46,14 +49,24 @@ class Aimbot:
             if self.config["draw_fps"]:
                 pm.draw_fps(0, 0)
             self.draw_fov()
-            if self.enemy_in_fov:
-                bounds = self.calc_bounds(pixel)
-                self.draw_bounds(bounds)
-                aim_point = self.calc_aim_point(bounds)
-                if self.config["autoaim"]:
-                    self.aim(aim_point, self.config["smooth"])
-                elif pm.key_pressed(self.config["aimkey"]):
-                    self.aim(aim_point, self.config["smooth"])
+            self.check_pause()
+            if not self.paused:
+                if self.enemy_in_fov:
+                    bounds = self.calc_bounds(pixel)
+                    self.draw_bounds(bounds)
+                    aim_point = self.calc_aim_point(bounds)
+                    if self.config["autoaim"]:
+                        self.aim(aim_point, self.config["smooth"])
+                    elif pm.key_pressed(self.config["aimkey"]):
+                        self.aim(aim_point, self.config["smooth"])
+            else:
+                pm.draw_text(
+                    text="Pause",
+                    posX=pm.get_screen_width() // 2 - pm.measure_text("Pause", 20) // 2,
+                    posY=(pm.get_screen_height() // 2) - 10,
+                    fontSize=20,
+                    color=self.colors["orange"]
+                )
             pm.end_drawing()
 
     def draw_fov(self):
@@ -122,6 +135,10 @@ class Aimbot:
             y=(point["y"] - pm.get_screen_height() // 2) // smooth,
             relative=True
         )
+
+    def check_pause(self):
+        if pm.key_pressed(self.config["pause_btn"]):
+            self.paused = not self.paused
 
 
 if __name__ == "__main__":
