@@ -1,5 +1,7 @@
 ## pyMeow Pixel Aimbot
 
+Simple configurable Pixel Aimbot created with pyMeow
+
 https://streamable.com/cdilip
 
 
