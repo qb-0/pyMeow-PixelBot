@@ -26,7 +26,7 @@ class Aimbot:
                 "fov": c.getint("Main", "fov"),
                 "pause_btn": c.getint("Main", "pause_btn"),
                 "autoaim": c.getboolean("Aimbot", "autoaim"),
-                "aimkey": c.getint("Aimbot", "aimkey"),
+                "aimkey": c["Aimbot"]["aimkey"],
                 "mark_color": pm.get_color(c.get("Aimbot", "mark_color")),
                 "smooth": c.getint("Aimbot", "smooth"),
             }
@@ -57,7 +57,7 @@ class Aimbot:
                     aim_point = self.calc_aim_point(bounds)
                     if self.config["autoaim"]:
                         self.aim(aim_point, self.config["smooth"])
-                    elif pm.key_pressed(self.config["aimkey"]):
+                    elif pm.mouse_pressed(self.config["aimkey"]):
                         self.aim(aim_point, self.config["smooth"])
             else:
                 pm.draw_text(
